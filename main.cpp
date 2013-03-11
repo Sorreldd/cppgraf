@@ -13,6 +13,70 @@ void golist() {
     vector < int > g[maxN];
     for(int i = 0; i < maxN; i++)
         g[i].clear();
+    while(cin >> s) {
+        if(s == "done") break;
+        if(s == "addedge") {
+            cin >> u >> v;
+            if(use[u] && use[v]) {
+                bool tt = true;
+                for(int i = 0; i < (int)g[u].size(); i++)
+                    if(g[u][i] == v) tt = false;
+                if(tt) {
+                    g[u].push_back(v);
+                    g[v].push_back(u);
+                }
+                cout << "Ребро добавлено или существовало\n";
+            } else cout << "Ребро не добавлено, одна из вершин не существует\n";
+        }
+        if(s == "remedge") {
+            cin >> u >> v;
+
+            for(int i = 0; i < (int)g[u].size(); i++) {
+                if(g[u][i] == v) g[u][i] = -1;
+            }
+            for(int i = 0; i < (int)g[v].size(); i++) {
+                if(g[v][i] == u) g[v][i] = -1;
+            }
+            cout << "Ребро удалено или не существовало\n";
+        }
+        if(s == "addvert") {
+            for(int i = 0; i < maxN; i++)
+                if(!use[i]) {
+                    n++;
+                    use[i] = true;
+                    cout << "Вершина добавлена под номером " << i << '\n';
+                    break;
+                }
+        }
+        if(s == "remvert") {
+            cin >> u;
+            while((int)g[u].size() != 0) {
+                g[u].pop_back();
+            }
+            for(int i = 0; i < maxN; i++)
+                for(int j = 0; j < (int)g[i].size(); j++)
+                    if(g[i][j] == u) g[i][j] = -1;
+            if(use[u]) {
+                n--;
+                use[u] = false;
+                cout << "Вершина и все смежные ей ребра удалены\n";
+            } else {
+                cout << "Вершина не существовала\n";
+            }
+        }
+        if(s == "info") {
+            cout << "Количество вершин: " << n << '\n';
+            for(int i = 0; i < maxN; i++) {
+                if(use[i]) {
+                    cout << i << ": ";
+                    for(int j = 0; j < (int)g[i].size(); j++) {
+                        if(g[i][j] >= 0)cout << g[i][j] << ' ';
+                    }
+                    cout << '\n';
+                }
+            }
+        }
+    }
 }
 
 void gomatrix() {
@@ -26,7 +90,7 @@ void gomatrix() {
             cin >> u >> v;
             if(use[u] && use[v]) {
                 a[u][v] = a[v][u] = 1;
-                cout << "Ребро добавлено\n";
+                cout << "Ребро добавлено или существовало\n";
             } else cout << "Ребро не добавлено, одна из вершин не существует\n";
         }
         if(s == "remedge") {
@@ -91,6 +155,7 @@ int main() {
     cout << "remedge u v - удалить ребро между вершинами u v\n";
     cout << "addvert - добавить вершину в граф, вершина получит первый свободный номер\n";
     cout << "remvert u - удалить из графа вершину u\n";
+    cout << "info - вывести информацию о графе\n";
     cout << "done - закончить ввод запросов\n";
     if(flag == false) {
         golist();
