@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdio>
 #include <vector>
+#include <cstdio>
 using namespace std;
 
 const int maxN = 1000;
@@ -136,6 +137,8 @@ void gomatrix() {
 
 
 int main() {
+    //freopen("input.txt", "r", stdin); //чтение из файла
+    //freopen("output.txt", "w", stdout); //вывод в файл
     cout << "Вершины нумеруются с 0 !\n";
     cout << "Выберите способ хранения\n";
     cout << "matrix - матрица\n";
